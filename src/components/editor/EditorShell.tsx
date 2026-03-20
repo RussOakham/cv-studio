@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { type CSSProperties, useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router";
 import { useConvexAuth } from "convex/react";
 import { useCvStore } from "@/store/cv-store";
@@ -8,6 +8,7 @@ import { Card } from "@/components/ui/card";
 import { CvPreview } from "@/components/cv/CvPreview";
 import { SectionOutline } from "@/components/editor/SectionOutline";
 import { SectionInspector } from "@/components/editor/SectionInspector";
+import { JsonEditorPanel } from "@/components/editor/JsonEditorPanel";
 import { ThemeSheet } from "@/components/editor/ThemeSheet";
 import { ProjectMenu } from "@/components/editor/ProjectMenu";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -22,6 +23,32 @@ export function EditorShell() {
   const setActiveSectionId = useCvStore((s) => s.setActiveSectionId);
   const [mobileOutlineOpen, setMobileOutlineOpen] = useState(false);
   const [mobileInspectorOpen, setMobileInspectorOpen] = useState(false);
+  const [editMode, setEditMode] = useState<"form" | "json">("form");
+  const [rightPaneWidth, setRightPaneWidth] = useState(520);
+  const resizeStartXRef = useRef(0);
+  const resizeStartWidthRef = useRef(520);
+  const resizingRef = useRef(false);
+
+  useEffect(() => {
+    const onMouseMove = (e: MouseEvent) => {
+      if (!resizingRef.current) {
+        return;
+      }
+      const delta = resizeStartXRef.current - e.clientX;
+      const next = resizeStartWidthRef.current + delta;
+      const clamped = Math.min(860, Math.max(360, next));
+      setRightPaneWidth(clamped);
+    };
+    const onMouseUp = () => {
+      resizingRef.current = false;
+    };
+    window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("mouseup", onMouseUp);
+    return () => {
+      window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("mouseup", onMouseUp);
+    };
+  }, []);
 
   return (
     <div className="flex h-dvh flex-col overflow-hidden">
@@ -31,6 +58,24 @@ export function EditorShell() {
           <ProjectMenu />
         </div>
         <div className="flex flex-wrap items-center justify-end gap-2">
+          <div className="hidden items-center gap-1 rounded-lg border p-1 lg:flex">
+            <Button
+              type="button"
+              size="sm"
+              variant={editMode === "form" ? "secondary" : "ghost"}
+              onClick={() => setEditMode("form")}
+            >
+              Form
+            </Button>
+            <Button
+              type="button"
+              size="sm"
+              variant={editMode === "json" ? "secondary" : "ghost"}
+              onClick={() => setEditMode("json")}
+            >
+              JSON
+            </Button>
+          </div>
           <ThemeSheet />
           <Link
             to={cvId ? `/cv/${cvId}/print` : "/"}
@@ -84,7 +129,7 @@ export function EditorShell() {
         <Sheet open={mobileInspectorOpen} onOpenChange={setMobileInspectorOpen}>
           <SheetTrigger className="w-full">
             <Button type="button" variant="outline" size="sm" className="w-full shadow-none">
-              Edit section
+              {editMode === "json" ? "Edit JSON" : "Edit section"}
             </Button>
           </SheetTrigger>
           <SheetContent
@@ -92,15 +137,22 @@ export function EditorShell() {
             className="flex h-full max-h-dvh w-full flex-col gap-0 p-0 sm:max-w-sm"
           >
             <SheetHeader className="bg-card shrink-0 border-b">
-              <SheetTitle>Inspector</SheetTitle>
+              <SheetTitle>{editMode === "json" ? "JSON Editor" : "Inspector"}</SheetTitle>
             </SheetHeader>
             <div className="min-h-0 flex-1 overflow-hidden">
-              <SectionInspector />
+              {editMode === "json" ? <JsonEditorPanel /> : <SectionInspector />}
             </div>
           </SheetContent>
         </Sheet>
       </div>
-      <div className="grid min-h-0 flex-1 grid-cols-1 lg:grid-cols-[220px_1fr_min(380px,100%)]">
+      <div
+        className="grid min-h-0 flex-1 grid-cols-1 lg:grid-cols-[220px_1fr_8px_var(--right-pane-width)]"
+        style={
+          {
+            "--right-pane-width": `${rightPaneWidth}px`,
+          } as CSSProperties
+        }
+      >
         <aside className="print:hidden bg-card hidden h-full min-h-0 border-b lg:block lg:border-r lg:border-b-0">
           <SectionOutline
             sections={document.sections}
@@ -115,8 +167,19 @@ export function EditorShell() {
             </Card>
           </div>
         </main>
+        <div
+          className="print:hidden bg-border/70 hover:bg-border hidden cursor-col-resize transition-colors lg:block"
+          onMouseDown={(e) => {
+            resizingRef.current = true;
+            resizeStartXRef.current = e.clientX;
+            resizeStartWidthRef.current = rightPaneWidth;
+          }}
+          role="separator"
+          aria-label="Resize editor side panel"
+          aria-orientation="vertical"
+        />
         <aside className="print:hidden bg-card hidden h-full min-h-0 border-t lg:block lg:border-t-0 lg:border-l">
-          <SectionInspector />
+          {editMode === "json" ? <JsonEditorPanel /> : <SectionInspector />}
         </aside>
       </div>
     </div>
