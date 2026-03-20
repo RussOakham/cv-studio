@@ -1,0 +1,33 @@
+---
+description: "TypeScript and React patterns for this Vite app"
+globs: ["**/*.ts", "**/*.tsx"]
+alwaysApply: false
+---
+
+# TypeScript & React (CV Studio)
+
+## Stack
+
+- **Vite 8**, **React 19**, **React Router 7**, **Tailwind 4**
+- **Zod** for `CvDocument` / schemas in `src/schema/`
+- **Zustand** + persist in `src/store/`
+- UI: **Base UI**-based primitives under `src/components/ui/`
+
+## Paths
+
+- Alias **`@/*`** → `src/*` (see `tsconfig.app.json` / `vite.config.ts`).
+
+## Data
+
+- CV shape is validated with Zod; persist/rehydrate runs **`parseCvDocument`** so stored JSON stays compatible when schemas evolve.
+- Prefer **Zod `.default()`** or optional fields for backward-compatible additions.
+
+## React
+
+- Functional components and hooks.
+- **No Next.js** — client runs in the browser; use `react-router` for navigation.
+- Match patterns in `src/routes/`, `src/components/editor/`, `src/components/cv/`.
+
+## PDF / export
+
+- **`pnpm run export:pdf`** needs Playwright Chromium installed; see `README.md`.

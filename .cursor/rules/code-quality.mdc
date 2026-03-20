@@ -1,0 +1,35 @@
+---
+description: "Lint, format, and typecheck commands for CV Studio"
+alwaysApply: true
+---
+
+# Code quality (CV Studio)
+
+## Commands
+
+| Goal | Command |
+| --- | --- |
+| Full gate | `pnpm run check` |
+| Lint only | `pnpm run lint` (Oxlint **--deny-warnings** + markdownlint) |
+| Fix lint where supported | `pnpm run lint:fix` |
+| Format | `pnpm run format` |
+| Verify format | `pnpm run format:check` |
+| Types only | `pnpm run typecheck` |
+| Production build | `pnpm run build` |
+
+After substantive edits, prefer **`pnpm run check`** before hand-off.
+
+## Style
+
+- **No `any`** — use proper types or `unknown`.
+- **Await promises** — no floating promises (Oxlint).
+- **Unused** — remove or prefix with `_`.
+- **Imports** — prefer `import type { … }` for type-only imports.
+- **Discriminated unions** — handle all variants; use a `never` exhaustiveness check in `default` when switching on section `kind` or similar.
+- **Imports at top** — no inline `import()` except intentional lazy/load splits.
+- **Filenames** — follow existing files under `src/` (mostly PascalCase for React components).
+
+## Config
+
+- Oxlint: `@.oxlintrc.json`
+- Formatter: oxfmt (via `pnpm run format`)

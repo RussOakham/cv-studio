@@ -1,0 +1,29 @@
+---
+description: "Git — commits, branches; no commit/push without explicit user permission"
+alwaysApply: true
+---
+
+# Git workflow (CV Studio)
+
+## Permission
+
+- **Do not commit or push** without explicit user permission.
+- Before committing, give a short summary of what changed.
+
+## Pre-commit
+
+Run **`pnpm run check`** (or at least `pnpm run lint` + `pnpm run typecheck` + `pnpm format` if you only need a lighter pass).
+
+## Commits
+
+Use [Conventional Commits](https://www.conventionalcommits.org/): `feat:`, `fix:`, `docs:`, `refactor:`, `chore:`.
+
+Examples: `feat(editor): add repo URL field`, `fix(print): margin clipping`.
+
+## Branches
+
+`feature/<kebab-case>`, `fix/<kebab-case>`, `docs/<kebab-case>`. Branch from `main` unless the user says otherwise.
+
+## Pull requests
+
+Open or update PRs **only when the user asks**. If opening one, ensure **`pnpm run check`** passes locally first.

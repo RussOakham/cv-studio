@@ -1,0 +1,19 @@
+{
+  "$schema": "https://raw.githubusercontent.com/DavidAnson/markdownlint-cli2/v0.21.0/schema/markdownlint-cli2-config-schema.json",
+  // Disabled rules are intentional: README/plan/docs favor long lines, tables, bare URLs,
+  // informal headings, duplicate section titles, optional code fence languages, etc.
+  "globs": ["**/*.md"],
+  "ignores": ["node_modules/**", "dist/**", "convex/_generated/**"],
+  "config": {
+    "MD013": false,
+    "MD014": false,
+    "MD024": false,
+    "MD026": false,
+    "MD029": false,
+    "MD033": false,
+    "MD034": false,
+    "MD036": false,
+    "MD040": false,
+    "MD041": false,
+  },
+}

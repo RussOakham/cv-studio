@@ -1,0 +1,48 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": [
+    "oxc",
+    "unicorn",
+    "typescript",
+    "react",
+    "jsx-a11y",
+    "import",
+    "promise",
+    "react-perf"
+  ],
+  "env": {
+    "builtin": true,
+    "browser": true
+  },
+  "ignorePatterns": ["dist", "node_modules"],
+  "settings": {
+    "react": {
+      "version": "19.2"
+    }
+  },
+  "options": {
+    "typeAware": true
+  },
+  "overrides": [
+    {
+      "files": ["vite.config.ts", "*.config.ts"],
+      "env": {
+        "builtin": true,
+        "node": true
+      }
+    },
+    {
+      "files": ["src/components/ui/label.tsx"],
+      "rules": {
+        "jsx-a11y/label-has-associated-control": "off"
+      }
+    },
+    {
+      "files": ["scripts/**/*.ts"],
+      "env": {
+        "builtin": true,
+        "node": true
+      }
+    }
+  ]
+}
