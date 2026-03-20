@@ -206,5 +206,5 @@ const raw: CvDocument = {
   ],
 };
 
-/** Validated default document (seed + Playwright export) */
+/** Validated default document seed */
 export const defaultCvDocument: CvDocument = parseCvDocument(raw);

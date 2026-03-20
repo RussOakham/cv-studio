@@ -32,7 +32,6 @@ dist-ssr
 # Tooling / test artifacts
 .turbo
 coverage
-playwright-report
 test-results
 *.tsbuildinfo
 

@@ -30,4 +30,4 @@ alwaysApply: false
 
 ## PDF / export
 
-- **`pnpm run export:pdf`** needs Playwright Chromium installed; see `README.md`.
+- Use native browser print (**Save to PDF**) from the preview route.

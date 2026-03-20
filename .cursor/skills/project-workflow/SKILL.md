@@ -15,7 +15,6 @@ Small Vite + React app: keep changes focused; prefer extending existing patterns
 
 ## Implementation plans
 
-- Product direction lives in **`docs/PLAN.md`** (prefer not to edit unless the user asks).
 - For phased work, use **`docs/implementation/<name>.md`** or a temporary **`docs/temp/<name>.temp.md`** (gitignored if you add that pattern later) with `- [ ]` tasks.
 - When implementing from a plan: work phase-by-phase; update checkboxes only if that file is the agreed “living” checklist.
 

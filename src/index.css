@@ -9,8 +9,8 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * App-level CSS variables (editor chrome). CV preview theme tokens will map
- * here and/or via Tailwind @theme as the product evolves (see docs/PLAN.md).
+ * App-level CSS variables (editor chrome). CV preview theme tokens map here
+ * and/or via Tailwind @theme as the product evolves.
  */
 @theme {
   --font-sans: system-ui, "Segoe UI", Roboto, sans-serif;
